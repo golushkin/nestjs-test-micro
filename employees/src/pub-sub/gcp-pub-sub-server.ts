@@ -9,7 +9,7 @@ export class GoogleCloudPubSubServer
   extends Server
   implements CustomTransportStrategy
 {
-  private pubSub: PubSub;
+  private pubSub: PubSub; // TODO: move to provider and inject in client & server
 
   constructor(private readonly configService: ConfigService) {
     super();
