@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { GoogleCloudPubSubServer } from './pub-sub/gcp-pub-sub-server';
+import { WebSocketAdapter } from './ws/ws.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,6 +11,7 @@ async function bootstrap() {
     strategy: pubSubServer,
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useWebSocketAdapter(new WebSocketAdapter(app));
 
   await app.startAllMicroservices();
   await app.listen(3000);

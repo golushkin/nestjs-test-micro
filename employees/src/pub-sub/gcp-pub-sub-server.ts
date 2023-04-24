@@ -22,22 +22,22 @@ export class GoogleCloudPubSubServer
       'GOOGLE_PUB_SUB_SUBSCRIPTION',
     );
     this.pubSub = new PubSub({ projectId });
-    const [topic] = await this.pubSub.topic(topicId).get({ autoCreate: true });
-    const [subscription] = await topic
-      .subscription(subscriptionId)
-      .get({ autoCreate: true });
+    // const [topic] = await this.pubSub.topic(topicId).get({ autoCreate: true });
+    // const [subscription] = await topic
+    //   .subscription(subscriptionId)
+    //   .get({ autoCreate: true });
 
-    subscription.on('message', async (message: Message) => {
-      const handler = this.messageHandlers.get(TopicNamesEnum.MY_TOPIC);
+    // subscription.on('message', async (message: Message) => {
+    //   const handler = this.messageHandlers.get(TopicNamesEnum.MY_TOPIC);
 
-      if (handler) {
-        await handler(message);
-      }
-    });
+    //   if (handler) {
+    //     await handler(message);
+    //   }
+    // });
 
-    subscription.on('error', (error) => {
-      console.error('Received error:', error);
-    });
+    // subscription.on('error', (error) => {
+    //   console.error('Received error:', error);
+    // });
 
     callback();
   }
