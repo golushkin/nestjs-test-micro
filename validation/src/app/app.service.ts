@@ -22,24 +22,15 @@ export class AppService {
   ) {}
 
   async createOder(info: CreateOrderDto, userId: string): Promise<OrderEntity> {
-    const docId = generateId();
-    const docRef = this.ordersCollection.doc(docId);
-    await docRef.set({
-      ...info,
-      _id: docId,
-      userId,
+    const order: OrderEntity = {
+      _id: generateId(),
       status: OrderStatusEnum.CREATED,
-    });
-
-    const doc = await docRef.get();
-    const order = doc.data();
-
-    if (!order) {
-      throw new InternalServerErrorException();
-    }
-
+      ...info,
+      userId,
+    };
+    await this.ordersCollection.doc(order._id).set(order);
     const topicId = this.configService.getOrThrow('GOOGLE_PUB_SUB_TOPIC');
-    await this.pubSub.emit(topicId, { test: 1 });
+    await this.pubSub.emit(topicId, { orderId: order._id });
 
     return order;
   }

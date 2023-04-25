@@ -1,11 +1,11 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateOrderDto {
+export class CreateEmployeeDto {
   @IsNotEmpty()
   @IsString()
-  price: string;
+  firstName: string;
 
   @IsNotEmpty()
   @IsString()
-  name: string;
+  lastName: string;
 }
