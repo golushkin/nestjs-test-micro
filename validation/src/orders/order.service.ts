@@ -10,7 +10,7 @@ import { ServicesEnum } from './enums/services.enum';
 import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
-export class AppService {
+export class OrderService {
   constructor(
     @Inject(ORDER_PROVIDER)
     private readonly ordersCollection: CollectionReference<OrderEntity>,
