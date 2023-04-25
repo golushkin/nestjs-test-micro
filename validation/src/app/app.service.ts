@@ -1,23 +1,21 @@
-import {
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ORDER_PROVIDER } from './providers/orders.provider';
 import { CollectionReference } from '@google-cloud/firestore';
 import { OrderEntity } from './entities/orders.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { generateId } from '../utils/id';
 import { OrderStatusEnum } from './enums/order-status.enum';
-import { GoogleCloudPubSubClient } from '../pub-sub/gcp-pub-sub-client';
 import { ConfigService } from '@nestjs/config';
+import { ServicesEnum } from './enums/services.enum';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class AppService {
   constructor(
     @Inject(ORDER_PROVIDER)
     private readonly ordersCollection: CollectionReference<OrderEntity>,
-    private readonly pubSub: GoogleCloudPubSubClient,
+    @Inject(ServicesEnum.EMPLOYEE)
+    private readonly employeeService: ClientProxy,
     private readonly configService: ConfigService,
   ) {}
 
@@ -30,7 +28,7 @@ export class AppService {
     };
     await this.ordersCollection.doc(order._id).set(order);
     const topicId = this.configService.getOrThrow('GOOGLE_PUB_SUB_TOPIC');
-    await this.pubSub.emit(topicId, { orderId: order._id });
+    await this.employeeService.emit(topicId, { orderId: order._id });
 
     return order;
   }

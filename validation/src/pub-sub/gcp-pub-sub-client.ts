@@ -1,14 +1,18 @@
 import { PubSub } from '@google-cloud/pubsub';
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { ClientProxy, ReadPacket, WritePacket } from '@nestjs/microservices';
 
-@Injectable()
 export class GoogleCloudPubSubClient extends ClientProxy {
   private pubSub: PubSub;
+  private projectId: string;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(options: Record<string, any>) {
     super();
+
+    if (!options['projectId']) {
+      throw new Error('projectId is not provided');
+    }
+
+    this.projectId = options['projectId'];
   }
 
   async connect(): Promise<PubSub> {
@@ -16,8 +20,7 @@ export class GoogleCloudPubSubClient extends ClientProxy {
       return this.pubSub;
     }
 
-    const projectId = this.configService.getOrThrow('GOOGLE_PROJECT_ID');
-    this.pubSub = new PubSub({ projectId });
+    this.pubSub = new PubSub({ projectId: this.projectId });
 
     return this.pubSub;
   }

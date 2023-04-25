@@ -4,13 +4,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { OrderProvider } from './providers/orders.provider';
-import { PubSubModule } from '../pub-sub/pub-sub.module';
+import { ClientsModule } from '@nestjs/microservices';
+import { EmployeeService } from './services/employee.service';
 
 @Module({
   imports: [
     DatabaseModule,
-    PubSubModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    ClientsModule.registerAsync([EmployeeService]),
   ],
   controllers: [AppController],
   providers: [AppService, OrderProvider],
