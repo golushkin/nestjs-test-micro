@@ -7,12 +7,11 @@ import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const pubSubServer = app.get(GoogleCloudPubSubServer);
   const configService = app.get(ConfigService);
   const port = +configService.getOrThrow('PORT');
 
   app.connectMicroservice({
-    strategy: pubSubServer,
+    strategy: new GoogleCloudPubSubServer(configService),
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.useWebSocketAdapter(new WebSocketAdapter(app));

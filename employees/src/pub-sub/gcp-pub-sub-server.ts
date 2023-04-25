@@ -1,28 +1,28 @@
 import { Message, PubSub } from '@google-cloud/pubsub';
-import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CustomTransportStrategy, Server } from '@nestjs/microservices';
 import { TopicNamesEnum } from '../shared/enums/topic-names.enum';
 
-@Injectable()
 export class GoogleCloudPubSubServer
   extends Server
   implements CustomTransportStrategy
 {
   private pubSub: PubSub; // TODO: move to provider and inject in client & server
+  private projectId: string;
+  private topicId: string;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(configService: ConfigService) {
     super();
+    this.projectId = configService.getOrThrow('GOOGLE_PROJECT_ID');
+    this.topicId = configService.getOrThrow('GOOGLE_PUB_SUB_TOPIC');
   }
 
   async listen(callback: () => void) {
-    const projectId = this.configService.getOrThrow('GOOGLE_PROJECT_ID');
-    const topicId = this.configService.getOrThrow('GOOGLE_PUB_SUB_TOPIC');
-    const subscriptionId = this.configService.getOrThrow(
-      'GOOGLE_PUB_SUB_SUBSCRIPTION',
-    );
-    this.pubSub = new PubSub({ projectId });
-    const [topic] = await this.pubSub.topic(topicId).get({ autoCreate: true });
+    const subscriptionId = 'my-sub';
+    this.pubSub = new PubSub({ projectId: this.projectId });
+    const [topic] = await this.pubSub
+      .topic(this.topicId)
+      .get({ autoCreate: true });
     const [subscription] = await topic
       .subscription(subscriptionId)
       .get({ autoCreate: true });

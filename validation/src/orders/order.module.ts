@@ -3,7 +3,7 @@ import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
 import { OrderProvider } from './providers/orders.provider';
 import { ClientsModule } from '@nestjs/microservices';
-import { EmployeeService } from './services/employee.service';
+import { EmployeeService } from './microservices/employee.microservice';
 
 @Module({
   imports: [ClientsModule.registerAsync([EmployeeService])],
