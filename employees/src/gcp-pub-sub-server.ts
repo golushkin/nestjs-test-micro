@@ -1,7 +1,7 @@
 import { Message, PubSub } from '@google-cloud/pubsub';
 import { ConfigService } from '@nestjs/config';
 import { CustomTransportStrategy, Server } from '@nestjs/microservices';
-import { TopicNamesEnum } from '../shared/enums/topic-names.enum';
+import { TopicNamesEnum } from './shared/enums/topic-names.enum';
 
 export class GoogleCloudPubSubServer
   extends Server

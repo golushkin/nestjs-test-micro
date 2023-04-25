@@ -1,6 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { ClientsProviderAsyncOptions } from '@nestjs/microservices';
-import { GoogleCloudPubSubClient } from '../../pub-sub/gcp-pub-sub-client';
+import { GoogleCloudPubSubClient } from './gcp-pub-sub-client';
 import { ServicesEnum } from '../enums/services.enum';
 
 export const EmployeeService: ClientsProviderAsyncOptions = {
