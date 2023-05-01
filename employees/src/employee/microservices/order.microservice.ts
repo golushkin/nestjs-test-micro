@@ -3,8 +3,8 @@ import { ClientsProviderAsyncOptions } from '@nestjs/microservices';
 import { GoogleCloudPubSubClient } from './gcp-pub-sub-client';
 import { MicroServicesEnum } from '../enums/microservices.enum';
 
-export const EmployeeService: ClientsProviderAsyncOptions = {
-  name: MicroServicesEnum.EMPLOYEE,
+export const OrderMicroService: ClientsProviderAsyncOptions = {
+  name: MicroServicesEnum.ORDER,
   inject: [ConfigService],
   useFactory: (configSerice: ConfigService) => ({
     customClass: GoogleCloudPubSubClient,

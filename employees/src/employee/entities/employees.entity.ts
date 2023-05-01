@@ -5,4 +5,5 @@ export class EmployeeEntity {
   firstName: string;
   lastName: string;
   status: EmployeeStatusEnum;
+  orderId?: string;
 }

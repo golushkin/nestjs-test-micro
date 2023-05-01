@@ -13,11 +13,11 @@ export class GoogleCloudPubSubServer
   constructor(configService: ConfigService) {
     super();
     this.projectId = configService.getOrThrow('GOOGLE_PROJECT_ID');
-    this.topicId = configService.getOrThrow('GOOGLE_PUB_SUB_TOPIC_EMPLOYEE');
+    this.topicId = configService.getOrThrow('GOOGLE_PUB_SUB_TOPIC_ORDER');
   }
 
   async listen(callback: () => void) {
-    const subscriptionId = 'employee-sub';
+    const subscriptionId = 'order-sub';
     this.pubSub = new PubSub({ projectId: this.projectId });
     const [topic] = await this.pubSub
       .topic(this.topicId)

@@ -6,5 +6,5 @@ export class OrderEntity {
   price: string;
   name: string;
   userId: string;
-  employeeId?: string;
+  employeeId: string | null;
 }
